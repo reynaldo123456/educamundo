@@ -31,7 +31,7 @@ def login_user(request):
             )
             if user:
                 login(request, user)
-                return redirect('home')
+                return redirect('index')
             else:
                 messages.warning(request, "Wrong credentials")
 
@@ -82,7 +82,7 @@ def profile(request):
     
     if request.method == "POST":
         if request.user.pk != account.pk:
-            return redirect('home')
+            return redirect('index')
         
         form = UserProfileUpdateForm(request.POST, instance=account)
         if form.is_valid():
@@ -113,7 +113,7 @@ def change_profile_picture(request):
             user = get_object_or_404(User, pk=request.user.pk)
             
             if request.user.pk != user.pk:
-                return redirect('home')
+                return redirect('index')
 
             user.profile_image = image
             user.save()

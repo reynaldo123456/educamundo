@@ -17,14 +17,14 @@ from .models import (
 from .forms import TextForm, AddBlogForm
 # Create your views here.
 
-def home (request):
+def index (request):
     blogs = Blog.objects.order_by('-created_date')
     tags = Tag.objects.order_by('-created_date')
     context = {
         'blogs':blogs,
         'tags':tags
     }
-    return render(request, 'home.html', context)
+    return render(request, 'index.html', context)
 
 def blogs(request):
     queryset = Blog.objects.order_by('-created_date')
@@ -191,7 +191,7 @@ def search_blogs(request):
         return render(request, 'search.html', context)
 
     else:
-        return redirect('home')
+        return redirect('index')
     
     
 
@@ -206,7 +206,7 @@ def my_blogs(request):
         blog = get_object_or_404(Blog, pk=delete)
         
         if request.user.pk != blog.user.pk:
-            return redirect('home')
+            return redirect('index')
 
         blog.delete()
         messages.success(request, "Your blog has been deleted!")
@@ -282,7 +282,7 @@ def update_blog(request, slug):
         if form.is_valid():
             
             if request.user.pk != blog.user.pk:
-                return redirect('home')
+                return redirect('index')
 
             tags = request.POST['tags'].split(',')
             user = get_object_or_404(User, pk=request.user.pk)
